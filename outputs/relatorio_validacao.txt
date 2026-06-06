@@ -1,0 +1,73 @@
+Relatório de Validação - FireRisk AI
+==================================================
+
+1. Comparação geral dos modelos
+--------------------------------------------------
+           modelo  acuracia  precision_macro  recall_macro  f1_macro  precision_weighted  recall_weighted  f1_weighted
+Gradient Boosting      0.76          0.75846      0.744734  0.749188            0.760634             0.76     0.758783
+    Random Forest      0.76          0.81383      0.670338  0.710759            0.776118             0.76     0.749684
+
+2. Melhor modelo utilizado
+--------------------------------------------------
+O melhor modelo utilizado nesta validação foi o modelo salvo em models/melhor_modelo.pkl.
+A escolha foi feita com base no maior F1 Macro, pois o dataset possui classes moderadamente desbalanceadas.
+
+3. Resultados no conjunto de teste
+--------------------------------------------------
+Total de registros de teste: 300
+Total de acertos: 228
+Total de erros: 72
+Acurácia: 0.7600
+Taxa de erro: 0.2400
+
+4. Relatório de classificação
+--------------------------------------------------
+              precision    recall  f1-score   support
+
+       baixo       0.77      0.82      0.79        33
+       medio       0.81      0.82      0.81       121
+        alto       0.70      0.74      0.72       101
+     critico       0.75      0.60      0.67        45
+
+    accuracy                           0.76       300
+   macro avg       0.76      0.74      0.75       300
+weighted avg       0.76      0.76      0.76       300
+
+
+5. Matriz de confusão
+--------------------------------------------------
+               Previsto: baixo  Previsto: medio  Previsto: alto  Previsto: critico
+Real: baixo                 27                6               0                  0
+Real: medio                  8               99              14                  0
+Real: alto                   0               17              75                  9
+Real: critico                0                0              18                 27
+
+6. Análise dos erros
+--------------------------------------------------
+Quantidade de erros por classe real:
+risco_incendio
+alto       26
+medio      22
+critico    18
+baixo       6
+Name: count, dtype: int64
+
+Quantidade de erros por classe prevista:
+risco_previsto
+alto       32
+medio      23
+critico     9
+baixo       8
+Name: count, dtype: int64
+
+Cruzamento entre classe real e classe prevista:
+Classe prevista  alto  baixo  critico  medio
+Classe real                                 
+alto                0      0        9     17
+baixo               0      0        0      6
+critico            18      0        0      0
+medio              14      8        0      0
+
+7. Interpretação técnica
+--------------------------------------------------
+O modelo apresentou desempenho adequado para um MVP baseado em dados sintéticos realistas. Como o objetivo inicial é validar o pipeline completo de IA, os resultados são suficientes para prosseguir para a etapa de interpretabilidade com SHAP e posteriormente para o deploy da aplicação. Em uma evolução futura, o dataset poderá ser substituído ou complementado por dados reais de APIs como NASA FIRMS, INPE Queimadas e NASA POWER.

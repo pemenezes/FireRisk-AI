@@ -1,0 +1,58 @@
+Resumo do Dataset - FireRisk AI
+========================================
+
+Dimensões do dataset: (1500, 15)
+
+Colunas:
+- latitude: float64
+- longitude: float64
+- estado: str
+- bioma: str
+- mes: int64
+- temperatura_media: float64
+- umidade_relativa: float64
+- precipitacao_mm: float64
+- velocidade_vento: float64
+- dias_sem_chuva: int64
+- focos_calor_7d: int64
+- distancia_foco_km: float64
+- ndvi: float64
+- historico_incendios: int64
+- risco_incendio: str
+
+Valores nulos por coluna:
+latitude               0
+longitude              0
+estado                 0
+bioma                  0
+mes                    0
+temperatura_media      0
+umidade_relativa       0
+precipitacao_mm        0
+velocidade_vento       0
+dias_sem_chuva         0
+focos_calor_7d         0
+distancia_foco_km      0
+ndvi                   0
+historico_incendios    0
+risco_incendio         0
+dtype: int64
+
+Linhas duplicadas:
+0
+
+Distribuição da variável alvo:
+risco_incendio
+medio      603
+alto       506
+critico    227
+baixo      164
+Name: count, dtype: int64
+
+Distribuição percentual da variável alvo:
+risco_incendio
+medio      40.20
+alto       33.73
+critico    15.13
+baixo      10.93
+Name: proportion, dtype: float64

@@ -1,0 +1,40 @@
+Relatório de Interpretabilidade SHAP - FireRisk AI
+============================================================
+
+1. Objetivo
+------------------------------------------------------------
+Esta etapa utiliza SHAP para explicar quais variáveis mais influenciam as previsões do modelo de risco de incêndio. A análise ajuda a tornar o modelo mais transparente e interpretável para usuários finais, como Defesa Civil, prefeituras, brigadas ambientais e produtores rurais.
+
+2. Variáveis mais influentes globalmente
+------------------------------------------------------------
+           variavel  importancia_media_abs_shap
+   umidade_relativa                    0.064021
+    precipitacao_mm                    0.056907
+     dias_sem_chuva                    0.052319
+  temperatura_media                    0.047703
+     focos_calor_7d                    0.046647
+  distancia_foco_km                    0.041984
+                mes                    0.032883
+               ndvi                    0.031499
+historico_incendios                    0.026219
+   velocidade_vento                    0.013624
+
+3. Exemplo de explicação local
+------------------------------------------------------------
+Classe prevista no exemplo analisado: critico
+
+           variavel  valor_shap  impacto_absoluto
+   umidade_relativa    0.319053          0.319053
+     focos_calor_7d    0.212452          0.212452
+               ndvi   -0.082937          0.082937
+  temperatura_media    0.082705          0.082705
+    precipitacao_mm    0.040814          0.040814
+historico_incendios    0.034898          0.034898
+                mes    0.024699          0.024699
+     dias_sem_chuva   -0.019943          0.019943
+   velocidade_vento   -0.014759          0.014759
+  distancia_foco_km    0.011639          0.011639
+
+4. Interpretação técnica
+------------------------------------------------------------
+As variáveis com maior importância média absoluta SHAP são aquelas que mais contribuíram para as decisões do modelo no conjunto analisado. Em um cenário de risco de incêndio, espera-se que fatores como umidade relativa, temperatura, precipitação, dias sem chuva, focos de calor próximos, distância até focos e NDVI tenham forte influência nas previsões. A explicação local demonstra, para uma previsão específica, quais fatores empurraram a decisão do modelo para determinada classe de risco.
