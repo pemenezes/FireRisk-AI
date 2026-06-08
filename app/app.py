@@ -6,6 +6,7 @@ import streamlit as st
 
 MODEL_PATH = "models/melhor_modelo.pkl"
 SHAP_PATH = "outputs/shap/importancia_global_shap.csv"
+DATASET_PATH = "data/firerisk_dataset.csv"
 
 
 ESTADOS = [
@@ -164,6 +165,12 @@ def carregar_modelo():
 def carregar_shap():
     if os.path.exists(SHAP_PATH):
         return pd.read_csv(SHAP_PATH)
+
+    return None
+
+def carregar_dataset():
+    if os.path.exists(DATASET_PATH):
+        return pd.read_csv(DATASET_PATH)
 
     return None
 
@@ -503,12 +510,138 @@ def exibir_shap(shap_df):
         st.bar_chart(grafico_df)
 
 
+def exibir_dataset(dataset_df):
+    st.header("📁 Dataset utilizado no projeto")
+
+    if dataset_df is None:
+        st.warning(
+            "Dataset não encontrado. Verifique se o arquivo data/firerisk_dataset.csv existe no projeto."
+        )
+        return
+
+    st.markdown(
+        """
+        <div class="info-box">
+        O modelo foi treinado com um dataset sintético realista, criado para simular
+        condições ambientais, climáticas, históricas e orbitais associadas ao risco
+        de incêndios em regiões brasileiras.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    total_linhas, total_colunas = dataset_df.shape
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("Total de registros", total_linhas)
+
+    with col2:
+        st.metric("Total de colunas", total_colunas)
+
+    with col3:
+        st.metric("Classes de risco", dataset_df["risco_incendio"].nunique())
+
+    st.subheader("Distribuição das classes de risco")
+
+    distribuicao_risco = (
+        dataset_df["risco_incendio"]
+        .value_counts()
+        .reset_index()
+    )
+
+    distribuicao_risco.columns = ["Classe de risco", "Quantidade"]
+
+    col4, col5 = st.columns([1, 1])
+
+    with col4:
+        st.dataframe(distribuicao_risco, use_container_width=True)
+
+    with col5:
+        st.bar_chart(
+            distribuicao_risco.set_index("Classe de risco")["Quantidade"]
+        )
+
+    st.subheader("Distribuição por bioma")
+
+    distribuicao_bioma = (
+        dataset_df["bioma"]
+        .value_counts()
+        .reset_index()
+    )
+
+    distribuicao_bioma.columns = ["Bioma", "Quantidade"]
+
+    col6, col7 = st.columns([1, 1])
+
+    with col6:
+        st.dataframe(distribuicao_bioma, use_container_width=True)
+
+    with col7:
+        st.bar_chart(
+            distribuicao_bioma.set_index("Bioma")["Quantidade"]
+        )
+
+    st.subheader("Exploração dos dados")
+
+    col8, col9 = st.columns(2)
+
+    with col8:
+        riscos_disponiveis = ["Todos"] + sorted(dataset_df["risco_incendio"].unique().tolist())
+        risco_selecionado = st.selectbox(
+            "Filtrar por classe de risco",
+            riscos_disponiveis
+        )
+
+    with col9:
+        biomas_disponiveis = ["Todos"] + sorted(dataset_df["bioma"].unique().tolist())
+        bioma_selecionado = st.selectbox(
+            "Filtrar por bioma",
+            biomas_disponiveis
+        )
+
+    dataset_filtrado = dataset_df.copy()
+
+    if risco_selecionado != "Todos":
+        dataset_filtrado = dataset_filtrado[
+            dataset_filtrado["risco_incendio"] == risco_selecionado
+        ]
+
+    if bioma_selecionado != "Todos":
+        dataset_filtrado = dataset_filtrado[
+            dataset_filtrado["bioma"] == bioma_selecionado
+        ]
+
+    st.write(f"Registros encontrados: **{len(dataset_filtrado)}**")
+
+    st.dataframe(
+        dataset_filtrado.head(100),
+        use_container_width=True
+    )
+
+    with st.expander("Ver estatísticas descritivas das variáveis numéricas"):
+        st.dataframe(
+            dataset_df.describe().T,
+            use_container_width=True
+        )
+
+    with st.expander("Ver colunas do dataset"):
+        colunas_df = pd.DataFrame({
+            "Coluna": dataset_df.columns,
+            "Tipo": [str(dataset_df[coluna].dtype) for coluna in dataset_df.columns]
+        })
+
+        st.dataframe(colunas_df, use_container_width=True)
+
+
 def main():
     configurar_pagina()
     inicializar_estado()
 
     modelo = carregar_modelo()
     shap_df = carregar_shap()
+    dataset_df = carregar_dataset()
 
     exibir_sidebar()
     exibir_cabecalho()
@@ -528,6 +661,10 @@ def main():
     st.divider()
 
     exibir_shap(shap_df)
+
+    st.divider()
+
+    exibir_dataset(dataset_df)
 
     st.divider()
 
