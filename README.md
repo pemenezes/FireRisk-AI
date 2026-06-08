@@ -38,7 +38,7 @@ O projeto se conecta à Indústria Espacial por meio do uso conceitual de dados 
 * dados climáticos e ambientais;
 * variáveis associadas ao monitoramento territorial.
 
-Nesta versão MVP, os dados foram gerados de forma sintética e realista para validar o pipeline completo de IA. Em uma evolução futura, a solução poderá ser integrada a APIs reais, como NASA FIRMS, INPE Queimadas, NASA POWER e dados de satélites Sentinel/Copernicus.
+Nesta versão MVP, os dados foram gerados de forma sintética e realista para validar o pipeline completo de IA. Nesta versão, o FireRisk AI utiliza dataset sintético realista para treinamento do modelo e também possui uma integração inicial com a API NASA POWER, permitindo consultar dados climáticos reais por latitude, longitude e data. A API é usada para preencher automaticamente variáveis como temperatura média, umidade relativa, precipitação e velocidade do vento.
 
 ## 🌱 ODS relacionados
 
