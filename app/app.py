@@ -1,12 +1,16 @@
 import os
+from datetime import date
+
 import joblib
 import pandas as pd
+import requests
 import streamlit as st
 
 
 MODEL_PATH = "models/melhor_modelo.pkl"
 SHAP_PATH = "outputs/shap/importancia_global_shap.csv"
 DATASET_PATH = "data/firerisk_dataset.csv"
+NASA_POWER_URL = "https://power.larc.nasa.gov/api/temporal/daily/point"
 
 
 ESTADOS = [
@@ -174,6 +178,79 @@ def carregar_dataset():
 
     return None
 
+def formatar_data_nasa(data_consulta):
+    return data_consulta.strftime("%Y%m%d")
+
+
+def consultar_nasa_power(latitude, longitude, data_consulta):
+    """
+    Consulta dados climáticos reais da NASA POWER para uma coordenada e data específica.
+
+    Parâmetros:
+    - T2M: temperatura média em °C
+    - RH2M: umidade relativa em %
+    - PRECTOTCORR: precipitação em mm/dia
+    - WS10M: velocidade do vento em m/s, convertida para km/h
+    """
+
+    data_formatada = formatar_data_nasa(data_consulta)
+
+    params = {
+        "parameters": "T2M,RH2M,PRECTOTCORR,WS10M",
+        "community": "AG",
+        "longitude": longitude,
+        "latitude": latitude,
+        "start": data_formatada,
+        "end": data_formatada,
+        "format": "JSON"
+    }
+
+    response = requests.get(NASA_POWER_URL, params=params, timeout=30)
+
+    if response.status_code != 200:
+        raise Exception(
+            f"Erro ao consultar NASA POWER. "
+            f"Status code: {response.status_code}. "
+            f"Resposta: {response.text}"
+        )
+
+    dados = response.json()
+
+    parametros = dados["properties"]["parameter"]
+
+    temperatura = parametros["T2M"][data_formatada]
+    umidade = parametros["RH2M"][data_formatada]
+    precipitacao = parametros["PRECTOTCORR"][data_formatada]
+    vento_ms = parametros["WS10M"][data_formatada]
+
+    valores = [temperatura, umidade, precipitacao, vento_ms]
+
+    if any(valor is None for valor in valores):
+        raise ValueError("A API retornou valores nulos para a data selecionada.")
+
+    if any(float(valor) <= -900 for valor in valores):
+        raise ValueError(
+            "A API retornou valores ausentes para a data selecionada. "
+            "Tente uma data anterior."
+        )
+
+    velocidade_vento_kmh = float(vento_ms) * 3.6
+
+    return {
+        "temperatura_media": round(float(temperatura), 2),
+        "umidade_relativa": round(float(umidade), 2),
+        "precipitacao_mm": round(float(precipitacao), 2),
+        "velocidade_vento": round(float(velocidade_vento_kmh), 2),
+        "data_api": data_formatada
+    }
+
+
+def aplicar_dados_climaticos_reais(dados_climaticos):
+    st.session_state["temperatura_media"] = dados_climaticos["temperatura_media"]
+    st.session_state["umidade_relativa"] = dados_climaticos["umidade_relativa"]
+    st.session_state["precipitacao_mm"] = dados_climaticos["precipitacao_mm"]
+    st.session_state["velocidade_vento"] = dados_climaticos["velocidade_vento"]
+
 
 def gerar_recomendacoes(risco):
     recomendacoes = {
@@ -304,10 +381,52 @@ def exibir_sidebar():
 
     st.sidebar.divider()
 
+    st.sidebar.subheader("🌎 Dados reais NASA POWER")
+
+    st.sidebar.write(
+        "Use a latitude e longitude atuais da tela para buscar dados climáticos reais "
+        "e preencher automaticamente temperatura, umidade, precipitação e vento."
+    )
+
+    data_consulta = st.sidebar.date_input(
+        "Data da consulta climática",
+        value=date(2024, 9, 7),
+        min_value=date(2001, 1, 1),
+        max_value=date.today()
+    )
+
+    if st.sidebar.button("Buscar dados climáticos reais", use_container_width=True):
+        try:
+            with st.spinner("Consultando NASA POWER..."):
+                dados_climaticos = consultar_nasa_power(
+                    latitude=st.session_state["latitude"],
+                    longitude=st.session_state["longitude"],
+                    data_consulta=data_consulta
+                )
+
+                aplicar_dados_climaticos_reais(dados_climaticos)
+
+            st.sidebar.success(
+                "Dados climáticos reais carregados com sucesso. "
+                "Confira os campos ambientais na tela principal."
+            )
+
+            st.sidebar.write(
+                f"Data consultada: `{dados_climaticos['data_api']}`"
+            )
+
+        except Exception as erro:
+            st.sidebar.error("Não foi possível consultar a NASA POWER.")
+            st.sidebar.write(str(erro))
+
+    st.sidebar.divider()
+
     st.sidebar.subheader("Sobre o MVP")
     st.sidebar.write(
         "Esta versão utiliza um dataset sintético realista para validar "
-        "o pipeline completo de IA, incluindo treinamento, validação, SHAP e deploy."
+        "o pipeline completo de IA, incluindo treinamento, validação, SHAP e deploy. "
+        "A aplicação também possui uma integração inicial com dados climáticos reais "
+        "da NASA POWER."
     )
 
 
