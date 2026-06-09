@@ -1,79 +1,116 @@
-# 🔥 FireRisk AI
+# 🛰️ ATLAS — FireRisk AI
 
-Sistema Inteligente de Previsão de Risco de Incêndios com Dados Orbitais
+Módulo de Inteligência Artificial para previsão de risco de queimadas com dados orbitais
 
 ## 📌 Sobre o projeto
 
-O **FireRisk AI** é uma solução de Inteligência Artificial desenvolvida para prever o risco de incêndios em determinada região a partir de variáveis ambientais, climáticas, históricas e orbitais simuladas.
+O **ATLAS** é uma plataforma inteligente de monitoramento e resposta a desastres ambientais baseada em dados orbitais, sensoriamento remoto e Inteligência Artificial.
 
-O projeto foi desenvolvido no contexto da **Global Solution 2026 — Space Connect / Indústria Espacial**, com foco na aplicação de dados espaciais e técnicas de Machine Learning para resolver problemas reais na Terra.
+A solução foi pensada para apoiar principalmente a prevenção de **queimadas** e **deslizamentos**, dois problemas críticos que atingem com maior intensidade regiões vulneráveis do Brasil e exigem resposta rápida, precisa e acessível.
 
-A proposta do FireRisk AI é apoiar ações preventivas de órgãos públicos, Defesa Civil, brigadas ambientais, produtores rurais e gestores de áreas protegidas, permitindo a identificação antecipada de regiões com maior risco de incêndio.
+Dentro da arquitetura geral do ATLAS, este repositório implementa o **FireRisk AI**, um módulo de Inteligência Artificial focado na previsão de risco de incêndios e queimadas. O objetivo deste MVP é demonstrar como dados ambientais, climáticos, históricos e orbitais podem ser processados por modelos de Machine Learning para classificar o risco de incêndio em uma região.
+
+A proposta do ATLAS vai além de apenas mapear ocorrências. Muitas soluções mostram o que já aconteceu e onde o evento ocorreu. O ATLAS busca transformar esse cenário em inteligência preditiva, permitindo identificar regiões com maior probabilidade de risco antes que o desastre aconteça.
 
 ## 🚀 Aplicação publicada
 
 A aplicação está disponível no Streamlit Cloud:
 
-🔗 https://firerisk-ai.streamlit.app
+https://firerisk-ai.streamlit.app
 
 ## 📂 Repositório
 
 Código-fonte disponível em:
 
-🔗 https://github.com/pemenezes/FireRisk-AI/tree/main
+https://github.com/pemenezes/FireRisk-AI/tree/main
 
 ## 🎯 Problema
 
-Incêndios florestais e queimadas causam impactos ambientais, sociais e econômicos significativos. Muitas regiões só conseguem reagir quando o fogo já está ativo, dificultando o controle e aumentando os prejuízos.
+Incêndios florestais, queimadas e deslizamentos causam impactos humanos, ambientais e materiais significativos. Em muitos municípios, principalmente em regiões vulneráveis, a resposta a esses eventos ainda ocorre de forma reativa, quando o desastre já aconteceu.
 
-A ausência de ferramentas acessíveis de previsão e explicação do risco dificulta a tomada de decisão preventiva. Por isso, o FireRisk AI busca antecipar o risco de incêndios com base em dados ambientais e orbitais simulados, oferecendo uma classificação clara e recomendações preventivas.
+Além disso, muitos órgãos locais não possuem equipes especializadas em análise geoespacial ou infraestrutura técnica para operar sistemas complexos de monitoramento.
 
-## 🛰️ Conexão com a Indústria Espacial
+O desafio do ATLAS é transformar dados orbitais e ambientais em informação útil para tomada de decisão, permitindo que equipes como Defesa Civil, prefeituras, brigadas ambientais e gestores públicos atuem de forma preventiva.
 
-O projeto se conecta à Indústria Espacial por meio do uso conceitual de dados orbitais e sensoriamento remoto, como:
-
-* focos de calor detectados por satélite;
-* índice de vegetação;
-* localização geográfica;
-* dados climáticos e ambientais;
-* variáveis associadas ao monitoramento territorial.
-
-Nesta versão MVP, os dados foram gerados de forma sintética e realista para validar o pipeline completo de IA. Nesta versão, o FireRisk AI utiliza dataset sintético realista para treinamento do modelo e também possui uma integração inicial com a API NASA POWER, permitindo consultar dados climáticos reais por latitude, longitude e data. A API é usada para preencher automaticamente variáveis como temperatura média, umidade relativa, precipitação e velocidade do vento.
-
-## 🌱 ODS relacionados
-
-O FireRisk AI está alinhado principalmente aos seguintes Objetivos de Desenvolvimento Sustentável:
-
-* **ODS 9 — Indústria, inovação e infraestrutura**
-* **ODS 11 — Cidades e comunidades sustentáveis**
-* **ODS 13 — Ação contra a mudança global do clima**
-* **ODS 2 — Fome zero e agricultura sustentável**, considerando a proteção de áreas agrícolas contra incêndios
-
-## 🧠 Objetivo da IA
-
-O objetivo do modelo é classificar o risco de incêndio de uma região em quatro níveis:
+Neste MVP, o foco foi a previsão de **risco de queimadas**, classificando uma região em quatro níveis de criticidade:
 
 * `baixo`
 * `medio`
 * `alto`
 * `critico`
 
-O problema foi tratado como uma tarefa de **classificação multiclasse**.
+## 🛰️ Solução proposta: ATLAS
+
+O **ATLAS** é uma plataforma de monitoramento e resposta a desastres ambientais que utiliza dados de satélites, sensoriamento remoto, dados climáticos e Inteligência Artificial para gerar previsões de risco por região.
+
+A solução foi concebida para integrar fontes como:
+
+* Sentinel-2;
+* NASA FIRMS;
+* INPE Queimadas;
+* CEMADEN;
+* NASA POWER;
+* sensores locais e IoT em versões futuras.
+
+A partir desses dados, o ATLAS pode apoiar a identificação de áreas com maior risco de queimadas e deslizamentos, gerando alertas classificados por nível de criticidade e recomendações operacionais em linguagem acessível.
+
+Exemplo de alerta ideal da plataforma ATLAS:
+
+```text
+Setor Norte com 87% de risco de deslizamento nas próximas 36 horas.
+Recomendação: acionar evacuação preventiva em comunidades do perímetro X.
+```
+
+No escopo deste repositório, foi implementado o módulo **FireRisk AI**, responsável pela previsão de risco de queimadas/incêndios.
+
+## 🔥 Módulo implementado: FireRisk AI
+
+O **FireRisk AI** é o módulo de IA do ATLAS voltado à previsão de risco de incêndios.
+
+Ele utiliza variáveis ambientais, climáticas, históricas e orbitais para estimar o risco de incêndio de uma região. O modelo foi treinado para classificar o risco em quatro níveis: baixo, médio, alto e crítico.
+
+A aplicação permite:
+
+* carregar cenários simulados de baixo risco e risco crítico;
+* inserir dados manualmente;
+* consultar dados climáticos reais via NASA POWER;
+* prever o risco de incêndio;
+* visualizar probabilidades por classe;
+* visualizar recomendações preventivas;
+* consultar a importância das variáveis com SHAP;
+* explorar o dataset utilizado no treinamento.
+
+## 🧠 Objetivo da IA
+
+O objetivo da Inteligência Artificial neste MVP é realizar uma tarefa de **classificação multiclasse**, prevendo o nível de risco de incêndio de uma região.
+
+A variável alvo do modelo é:
+
+```text
+risco_incendio
+```
+
+As classes previstas são:
+
+| Classe    | Significado                                 |
+| --------- | ------------------------------------------- |
+| `baixo`   | Condições pouco favoráveis para incêndio    |
+| `medio`   | Atenção moderada                            |
+| `alto`    | Risco relevante, exige monitoramento        |
+| `critico` | Risco grave, exige alerta e ação preventiva |
 
 ## 🗃️ Dataset
 
-Foi criado um dataset sintético realista contendo:
+Foi criado um dataset sintético realista para validar o pipeline completo de IA.
+
+O dataset possui:
 
 * **1.500 registros**
 * **15 colunas**
 * **14 variáveis de entrada**
 * **1 variável alvo**
 
-A variável alvo é:
-
-```text
-risco_incendio
-```
+A geração sintética foi usada para permitir o funcionamento completo do MVP, mesmo antes da integração total com bases históricas reais.
 
 ### Colunas utilizadas
 
@@ -95,11 +132,30 @@ risco_incendio
 | `historico_incendios` | Histórico de incêndios na região                |
 | `risco_incendio`      | Classe de risco prevista                        |
 
+## 🌎 Integração com dados reais — NASA POWER
+
+Além do dataset sintético utilizado para treinamento do modelo, o FireRisk AI possui uma integração inicial com a API **NASA POWER**.
+
+Essa integração permite consultar dados climáticos reais a partir de:
+
+* latitude;
+* longitude;
+* data da consulta.
+
+Os dados retornados pela API são usados para preencher automaticamente algumas variáveis da aplicação:
+
+* temperatura média;
+* umidade relativa;
+* precipitação;
+* velocidade do vento.
+
+Essa funcionalidade aproxima o MVP da proposta real do ATLAS, demonstrando como dados externos e orbitais podem alimentar o processo de tomada de decisão.
+
 ## ⚙️ Pipeline de Machine Learning
 
 O pipeline desenvolvido contempla as seguintes etapas:
 
-1. Geração do dataset sintético
+1. Geração do dataset sintético realista
 2. Validação e análise inicial dos dados
 3. Pré-processamento
 4. Separação entre treino e teste
@@ -108,6 +164,7 @@ O pipeline desenvolvido contempla as seguintes etapas:
 7. Escolha do melhor modelo
 8. Interpretabilidade com SHAP
 9. Deploy da aplicação com Streamlit
+10. Integração inicial com API real da NASA POWER
 
 ## 🧪 Modelos utilizados
 
@@ -161,15 +218,46 @@ A análise SHAP mostrou que o modelo priorizou variáveis tecnicamente coerentes
 
 ## 🖥️ Aplicação Streamlit
 
-A aplicação permite:
+A aplicação web funciona como uma versão inicial do **Painel Operacional ATLAS** para o módulo de queimadas.
 
-* carregar um cenário de baixo risco;
-* carregar um cenário crítico;
-* informar manualmente variáveis ambientais e regionais;
+Ela permite:
+
+* visualizar o objetivo do projeto;
+* carregar cenários prontos de baixo risco e risco crítico;
+* consultar dados climáticos reais via NASA POWER;
+* preencher dados ambientais e regionais;
 * prever o risco de incêndio;
 * visualizar probabilidades por classe;
 * receber recomendações preventivas;
-* visualizar a importância das variáveis com SHAP.
+* visualizar a importância das variáveis via SHAP;
+* explorar o dataset utilizado no treinamento.
+
+## 🧭 Papel do FireRisk AI dentro do ATLAS
+
+O FireRisk AI representa a primeira camada funcional da visão geral do ATLAS.
+
+Na solução completa, o ATLAS poderia conter múltiplos módulos especializados:
+
+| Módulo                   | Objetivo                                                 |
+| ------------------------ | -------------------------------------------------------- |
+| FireRisk AI              | Previsão de risco de queimadas/incêndios                 |
+| LandslideRisk AI         | Previsão de risco de deslizamentos                       |
+| Orbital Data Hub         | Integração de dados orbitais e ambientais                |
+| Alert Engine             | Geração de alertas em linguagem natural                  |
+| Painel Operacional ATLAS | Visualização de mapas, riscos e recomendações            |
+| IoT/Sensor Layer         | Expansão com sensores locais, LoRaWAN e IoT via satélite |
+
+Neste repositório, foi desenvolvido o módulo **FireRisk AI** como MVP funcional da camada de IA.
+
+## 🌱 ODS relacionados
+
+A solução se conecta diretamente aos seguintes Objetivos de Desenvolvimento Sustentável:
+
+* **ODS 9 — Indústria, inovação e infraestrutura**
+* **ODS 11 — Cidades e comunidades sustentáveis**
+* **ODS 13 — Ação contra a mudança global do clima**
+
+O ATLAS promove inovação tecnológica, apoia cidades mais resilientes e fortalece a resposta preventiva a eventos climáticos e ambientais extremos.
 
 ## 🏗️ Estrutura do projeto
 
@@ -201,6 +289,7 @@ FireRisk-AI/
 │
 ├── src/
 │   ├── analisar_resultados.py
+│   ├── consultar_nasa_power.py
 │   ├── explicar_shap.py
 │   ├── gerar_dataset.py
 │   ├── preprocessamento.py
@@ -291,7 +380,13 @@ python src/analisar_resultados.py
 python src/explicar_shap.py
 ```
 
-### 6. Executar aplicação
+### 6. Testar consulta NASA POWER
+
+```bash
+python src/consultar_nasa_power.py
+```
+
+### 7. Executar aplicação
 
 ```bash
 python -m streamlit run app/app.py
@@ -322,54 +417,56 @@ python -m streamlit run app/app.py
 * SHAP
 * Matplotlib
 * Streamlit
+* Requests
+* NASA POWER API
 * GitHub
 * Streamlit Cloud
 
 ## 📌 Limitações do MVP
 
-Esta versão utiliza um dataset sintético realista. Isso permite validar o pipeline completo de IA de ponta a ponta, mas ainda não representa uma operação em tempo real com dados oficiais.
+Esta versão implementa o módulo de previsão de risco de queimadas do ATLAS, mas ainda não representa a plataforma completa.
 
 As principais limitações são:
 
-* os dados não são coletados em tempo real;
-* o dataset foi gerado artificialmente;
-* não há integração automática com APIs externas;
-* o modelo ainda não foi validado com bases reais históricas;
-* o sistema não substitui análises técnicas de órgãos oficiais.
+* o treinamento ainda utiliza dataset sintético realista;
+* a integração com dados reais está limitada à NASA POWER;
+* focos de calor reais ainda não são consumidos automaticamente via NASA FIRMS ou INPE;
+* o módulo de deslizamentos ainda não foi implementado;
+* o painel ainda não possui mapas operacionais em tempo real;
+* o sistema ainda não emite alertas automáticos;
+* o modelo ainda não foi validado com uma base histórica oficial completa.
 
 ## 🔮 Próximos passos
 
-Como evolução futura, o FireRisk AI poderá ser integrado a fontes reais, como:
+Como evolução futura, o ATLAS poderá incorporar:
 
-* NASA FIRMS;
-* INPE Queimadas;
-* NASA POWER;
-* Sentinel/Copernicus;
-* bases meteorológicas públicas;
-* dados históricos de focos de calor e queimadas.
-
-Também poderão ser adicionadas funcionalidades como:
-
-* mapa interativo;
-* alertas automáticos;
-* consulta por município;
-* atualização diária dos dados;
-* integração com dashboards;
-* API para consumo por outros sistemas;
-* priorização automática de áreas críticas.
+* integração com NASA FIRMS para focos de calor reais;
+* integração com INPE Queimadas;
+* integração com CEMADEN para risco hidrológico e deslizamentos;
+* uso de imagens Sentinel-2;
+* mapa interativo com regiões monitoradas;
+* alertas automáticos por nível de criticidade;
+* geração de alertas em linguagem natural;
+* previsão de risco de deslizamentos;
+* IoT via satélite e LoRaWAN para áreas remotas;
+* API para consumo por órgãos públicos;
+* painel operacional completo para Defesa Civil.
 
 ## 👥 Integrantes
 
+
 ```text
-pedro henrique menezes - RM97432
-Pedro Gava - RM551043
-Henrique Lima - RM551528
-Anny Dias - RM98295
+Anny Dias	RM98295
+Henrique Lima	RM551528
+Pedro Gava	RM551043
+Pedro Menezes	RM97432
 ```
 
 ## 📚 Contexto acadêmico
 
-Projeto desenvolvido para a **Global Solution 2026 — Engenharia de Software — FIAP**, com foco na disciplina **Generative AI For Engineering**.
+Projeto desenvolvido para a **Global Solution 2026 — Engenharia de Software — FIAP**, dentro da proposta de soluções tecnológicas conectadas à Indústria Espacial.
+
+Este repositório representa a entrega da camada de Inteligência Artificial, implementando o módulo **FireRisk AI** como parte da visão geral do **ATLAS**.
 
 ## ✅ Status
 
@@ -381,4 +478,6 @@ Projeto funcional com:
 * validação com métricas;
 * interpretabilidade com SHAP;
 * aplicação publicada no Streamlit Cloud;
+* visualização do dataset;
+* integração inicial com dados climáticos reais via NASA POWER;
 * repositório público no GitHub.
